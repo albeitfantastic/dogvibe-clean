@@ -1,6 +1,6 @@
 import type { AgeBand, Dog } from '@/src/types/domain';
+import { v4 as uuidv4 } from 'uuid';
 import { create } from 'zustand';
-
 type DogState = {
   currentDog: Dog | null;
   createDog: (input: { name: string; breed?: string; ageBand?: AgeBand }) => void;
@@ -12,7 +12,7 @@ export const useDogStore = create<DogState>((set) => ({
   createDog: ({ name, breed, ageBand }) =>
     set({
       currentDog: {
-        id: crypto.randomUUID(),
+        id: uuidv4(),
         name,
         breed,
         ageBand,
