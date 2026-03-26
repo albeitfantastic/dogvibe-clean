@@ -4,6 +4,10 @@ import { ActivityIndicator, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import TopBar from "../src/components/TopBar";
 import { useEntryDraftStore } from "../src/store/useEntryDraftStore";
+import { colors } from "../src/theme/colors";
+import { radius } from "../src/theme/radius";
+import { spacing } from "../src/theme/spacing";
+import { typography } from "../src/theme/typography";
 import { loadingMessages, mockAnalyze } from "../src/utils/mockAI";
 
 export default function AnalyzeScreen() {
@@ -40,9 +44,9 @@ export default function AnalyzeScreen() {
   return (
     <SafeAreaView
       edges={["left", "right", "bottom"]}
-      style={{ flex: 1, backgroundColor: "#f6f1ee" }}
+      style={{ flex: 1, backgroundColor: colors.background }}
     >
-      <View style={{ flex: 1, paddingHorizontal: 16, paddingBottom: 20 }}>
+      <View style={{ flex: 1, paddingHorizontal: spacing.lg, paddingBottom: spacing.xl }}>
         <TopBar title="Analyzing" showBack={false} />
 
         <View
@@ -53,26 +57,25 @@ export default function AnalyzeScreen() {
         >
           <View
             style={{
-              backgroundColor: "#fffdfb",
-              borderRadius: 30,
-              paddingVertical: 52,
-              paddingHorizontal: 24,
+              backgroundColor: colors.surface,
+              borderRadius: radius.round,
+              paddingVertical: spacing.hero,
+              paddingHorizontal: spacing.xxl,
               alignItems: "center",
-              shadowColor: "#000000",
+              shadowColor: colors.shadow,
               shadowOpacity: 0.05,
               shadowRadius: 16,
               shadowOffset: { width: 0, height: 6 },
               elevation: 2,
             }}
           >
-            <ActivityIndicator size="large" color="#f56f6f" />
+            <ActivityIndicator size="large" color={colors.primary} />
 
             <Text
               style={{
-                fontSize: 26,
-                fontWeight: "800",
-                color: "#1c1c1e",
-                marginTop: 22,
+                ...typography.title,
+                color: colors.textPrimary,
+                marginTop: spacing.xl + spacing.xs,
                 letterSpacing: -0.6,
               }}
             >
@@ -81,11 +84,10 @@ export default function AnalyzeScreen() {
 
             <Text
               style={{
-                fontSize: 17,
-                color: "#6e6a67",
-                marginTop: 10,
+                ...typography.body,
+                color: colors.textSecondary,
+                marginTop: spacing.sm + spacing.xxs,
                 textAlign: "center",
-                lineHeight: 25,
               }}
             >
               {loadingMessage}

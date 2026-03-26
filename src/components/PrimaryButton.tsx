@@ -1,4 +1,8 @@
 import { Pressable, Text } from "react-native";
+import { colors } from "../theme/colors";
+import { radius } from "../theme/radius";
+import { spacing } from "../theme/spacing";
+import { typography } from "../theme/typography";
 
 type Props = {
   title: string;
@@ -15,20 +19,19 @@ export default function PrimaryButton({
     <Pressable
       onPress={onPress}
       disabled={disabled}
-      hitSlop={6}
+      hitSlop={spacing.xs + spacing.xxs}
       style={({ pressed }) => ({
         minHeight: 54,
-        borderRadius: 18,
+        borderRadius: radius.lg,
         alignItems: "center",
         justifyContent: "center",
-        backgroundColor: disabled ? "#f0b8b8" : pressed ? "#f16969" : "#f56f6f",
+        backgroundColor: disabled ? colors.primaryDisabled : pressed ? colors.primaryPressed : colors.primary,
       })}
     >
       <Text
         style={{
-          fontSize: 17,
-          fontWeight: "700",
-          color: "#ffffff",
+          ...typography.button,
+          color: colors.textInverse,
           letterSpacing: -0.2,
         }}
       >

@@ -4,6 +4,10 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import PrimaryButton from "../src/components/PrimaryButton";
 import TopBar from "../src/components/TopBar";
 import { useDogStore } from "../src/store/useDogStore";
+import { colors } from "../src/theme/colors";
+import { radius } from "../src/theme/radius";
+import { spacing } from "../src/theme/spacing";
+import { typography } from "../src/theme/typography";
 
 export default function PaywallScreen() {
   const router = useRouter();
@@ -15,27 +19,29 @@ export default function PaywallScreen() {
   };
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: "#f6f2ee" }} edges={["top"]}>
-      <View style={{ flex: 1, paddingHorizontal: 20 }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: colors.background }} edges={["top"]}>
+      <View style={{ flex: 1, paddingHorizontal: spacing.xl }}>
         <TopBar title="DogVibe Premium" />
 
-        <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 32 }}>
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={{ paddingBottom: spacing.xxxl }}
+        >
           <View
             style={{
-              backgroundColor: "#fffaf7",
-              borderRadius: 28,
-              padding: 24,
+              backgroundColor: colors.surface,
+              borderRadius: radius.xxl,
+              padding: spacing.xxl,
               borderWidth: 1,
-              borderColor: "#efe6e0",
-              marginBottom: 18,
+              borderColor: colors.border,
+              marginBottom: spacing.lg + spacing.xxs,
             }}
           >
             <Text
               style={{
-                fontSize: 30,
-                fontWeight: "700",
-                color: "#1f1a17",
-                marginBottom: 8,
+                ...typography.displayMd,
+                color: colors.textPrimary,
+                marginBottom: spacing.sm,
               }}
             >
               More puppies, more vibes
@@ -43,10 +49,9 @@ export default function PaywallScreen() {
 
             <Text
               style={{
-                fontSize: 16,
-                lineHeight: 24,
-                color: "#6f6258",
-                marginBottom: 18,
+                ...typography.body,
+                color: colors.textSecondary,
+                marginBottom: spacing.lg + spacing.xxs,
               }}
             >
               Premium unlocks multi-dog life, so each pup gets their own little mood diary.
@@ -55,13 +60,13 @@ export default function PaywallScreen() {
             <View
               style={{
                 alignSelf: "flex-start",
-                backgroundColor: "#fdf0eb",
-                borderRadius: 999,
-                paddingHorizontal: 12,
-                paddingVertical: 7,
+                backgroundColor: colors.primarySoft,
+                borderRadius: radius.pill,
+                paddingHorizontal: spacing.md,
+                paddingVertical: spacing.sm - spacing.xxs,
               }}
             >
-              <Text style={{ fontSize: 13, fontWeight: "600", color: "#b95d52" }}>
+              <Text style={{ ...typography.caption, color: colors.textInverse }}>
                 Mock paywall
               </Text>
             </View>
@@ -69,13 +74,13 @@ export default function PaywallScreen() {
 
           <View
             style={{
-              backgroundColor: "#fff",
-              borderRadius: 24,
-              padding: 18,
+              backgroundColor: colors.surface,
+              borderRadius: radius.xl,
+              padding: spacing.lg + spacing.xxs,
               borderWidth: 1,
-              borderColor: "#efe6e0",
-              marginBottom: 18,
-              gap: 14,
+              borderColor: colors.border,
+              marginBottom: spacing.lg + spacing.xxs,
+              gap: spacing.md + spacing.xxs,
             }}
           >
             {[
@@ -86,32 +91,31 @@ export default function PaywallScreen() {
               <View
                 key={item}
                 style={{
-                  backgroundColor: "#f8f3ef",
-                  borderRadius: 18,
-                  paddingHorizontal: 16,
-                  paddingVertical: 15,
+                  backgroundColor: colors.surfaceMuted,
+                  borderRadius: radius.lg,
+                  paddingHorizontal: spacing.lg,
+                  paddingVertical: spacing.lg - spacing.xxs,
                 }}
               >
-                <Text style={{ fontSize: 16, fontWeight: "600", color: "#2d2520" }}>{item}</Text>
+                <Text style={{ ...typography.bodyStrong, color: colors.textPrimary }}>{item}</Text>
               </View>
             ))}
           </View>
 
           <View
             style={{
-              backgroundColor: "#fff",
-              borderRadius: 24,
-              padding: 18,
+              backgroundColor: colors.surface,
+              borderRadius: radius.xl,
+              padding: spacing.lg + spacing.xxs,
               borderWidth: 1,
-              borderColor: "#efe6e0",
-              marginBottom: 18,
+              borderColor: colors.border,
+              marginBottom: spacing.lg + spacing.xxs,
             }}
           >
             <Text
               style={{
-                fontSize: 14,
-                lineHeight: 22,
-                color: "#6f6258",
+                ...typography.bodySmall,
+                color: colors.textSecondary,
               }}
             >
               This is still a mock premium screen for now. Tapping unlock will immediately enable
@@ -121,7 +125,7 @@ export default function PaywallScreen() {
 
           <PrimaryButton title="Unlock premium" onPress={handleUnlock} />
 
-          <View style={{ height: 10 }} />
+          <View style={{ height: radius.sm }} />
 
           <PrimaryButton title="Not now" onPress={() => router.back()} />
         </ScrollView>

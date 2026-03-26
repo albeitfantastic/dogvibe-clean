@@ -9,6 +9,10 @@ import TopBar from "../src/components/TopBar";
 import { useDogStore } from "../src/store/useDogStore";
 import { useEntryDraftStore } from "../src/store/useEntryDraftStore";
 import { useEntryStore } from "../src/store/useEntryStore";
+import { colors } from "../src/theme/colors";
+import { radius } from "../src/theme/radius";
+import { spacing } from "../src/theme/spacing";
+import { typography } from "../src/theme/typography";
 import { getMoodEmoji } from "../src/utils/mood";
 
 export default function ResultScreen() {
@@ -78,9 +82,9 @@ export default function ResultScreen() {
   return (
     <SafeAreaView
       edges={["left", "right", "bottom"]}
-      style={{ flex: 1, backgroundColor: "#f6f1ee" }}
+      style={{ flex: 1, backgroundColor: colors.background }}
     >
-      <View style={{ flex: 1, paddingHorizontal: 16, paddingBottom: 20 }}>
+      <View style={{ flex: 1, paddingHorizontal: spacing.lg, paddingBottom: spacing.xl }}>
         <TopBar
           title="Result"
           showBack={false}
@@ -91,10 +95,10 @@ export default function ResultScreen() {
         <View
           style={{
             flex: 1,
-            backgroundColor: "#fffdfb",
-            borderRadius: 30,
-            padding: 12,
-            shadowColor: "#000000",
+            backgroundColor: colors.surface,
+            borderRadius: radius.round,
+            padding: spacing.md,
+            shadowColor: colors.shadow,
             shadowOpacity: 0.05,
             shadowRadius: 16,
             shadowOffset: { width: 0, height: 6 },
@@ -105,8 +109,8 @@ export default function ResultScreen() {
             ref={cardRef}
             collapsable={false}
             style={{
-              backgroundColor: "#fffdfb",
-              borderRadius: 24,
+              backgroundColor: colors.surface,
+              borderRadius: radius.xl,
               overflow: "hidden",
             }}
           >
@@ -120,19 +124,18 @@ export default function ResultScreen() {
 
             <View
               style={{
-                paddingHorizontal: 18,
-                paddingTop: 18,
-                paddingBottom: 20,
+                paddingHorizontal: spacing.lg + spacing.xxs,
+                paddingTop: spacing.lg + spacing.xxs,
+                paddingBottom: spacing.xl,
               }}
             >
               <Text
                 style={{
-                  fontSize: 13,
-                  color: "#f56f6f",
-                  fontWeight: "700",
+                  ...typography.caption,
+                  color: colors.primary,
                   textTransform: "uppercase",
                   letterSpacing: 1,
-                  marginBottom: 8,
+                  marginBottom: spacing.sm,
                 }}
               >
                 Today&apos;s result
@@ -140,9 +143,8 @@ export default function ResultScreen() {
 
               <Text
                 style={{
-                  fontSize: 34,
-                  fontWeight: "800",
-                  color: "#1c1c1e",
+                  ...typography.displayLg,
+                  color: colors.textPrimary,
                   letterSpacing: -0.8,
                 }}
               >
@@ -151,10 +153,9 @@ export default function ResultScreen() {
 
               <Text
                 style={{
-                  fontSize: 18,
-                  color: "#6e6a67",
-                  marginTop: 10,
-                  lineHeight: 25,
+                  ...typography.subheading,
+                  color: colors.textSecondary,
+                  marginTop: spacing.sm + spacing.xxs,
                 }}
               >
                 Mood: {mood} {moodEmoji}
@@ -162,9 +163,9 @@ export default function ResultScreen() {
 
               <Text
                 style={{
-                  fontSize: 14,
-                  color: "#9d9894",
-                  marginTop: 16,
+                  ...typography.caption,
+                  color: colors.textMuted,
+                  marginTop: spacing.lg,
                 }}
               >
                 Made with DogVibe
@@ -174,7 +175,7 @@ export default function ResultScreen() {
 
           <View style={{ flex: 1 }} />
 
-          <View style={{ marginBottom: 12 }}>
+          <View style={{ marginBottom: spacing.md }}>
             <PrimaryButton title="Share card" onPress={handleShare} />
           </View>
 

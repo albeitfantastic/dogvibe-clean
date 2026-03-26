@@ -9,9 +9,14 @@ import {
   View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import BottomNav from "../src/components/BottomNav";
 import PrimaryButton from "../src/components/PrimaryButton";
 import TopBar from "../src/components/TopBar";
 import { useDogStore } from "../src/store/useDogStore";
+import { colors } from "../src/theme/colors";
+import { radius } from "../src/theme/radius";
+import { spacing } from "../src/theme/spacing";
+import { typography } from "../src/theme/typography";
 
 export default function SettingsScreen() {
   const router = useRouter();
@@ -30,6 +35,16 @@ export default function SettingsScreen() {
   const [name, setName] = useState(currentDog?.name ?? "");
   const [breed, setBreed] = useState(currentDog?.breed ?? "");
   const [ageBand, setAgeBand] = useState(currentDog?.ageBand ?? "");
+
+  const handleFoodPress = () => {
+    Alert.alert("Food log", "Capture a new mood card for a food moment.");
+    router.push("/capture");
+  };
+
+  const handlePoopPress = () => {
+    Alert.alert("Poop log", "Capture a new mood card for a potty update.");
+    router.push("/capture");
+  };
 
   useEffect(() => {
     setName(currentDog?.name ?? "");
@@ -69,22 +84,22 @@ export default function SettingsScreen() {
   return (
     <SafeAreaView
       edges={["left", "right", "bottom"]}
-      style={{ flex: 1, backgroundColor: "#f6f1ee" }}
+      style={{ flex: 1, backgroundColor: colors.background }}
     >
       <ScrollView
         style={{ flex: 1 }}
-        contentContainerStyle={{ paddingHorizontal: 16, paddingBottom: 24 }}
+        contentContainerStyle={{ paddingHorizontal: spacing.lg, paddingBottom: spacing.xxxl + 96 }}
         showsVerticalScrollIndicator={false}
       >
-        <TopBar title="Settings" />
+        <TopBar title="Pets Editor" />
 
         <View
           style={{
-            backgroundColor: "#fffdfb",
-            borderRadius: 30,
-            padding: 22,
-            marginBottom: 16,
-            shadowColor: "#000000",
+            backgroundColor: colors.surface,
+            borderRadius: radius.round,
+            padding: spacing.xxl - spacing.xxs,
+            marginBottom: spacing.lg,
+            shadowColor: colors.shadow,
             shadowOpacity: 0.05,
             shadowRadius: 16,
             shadowOffset: { width: 0, height: 6 },
@@ -93,22 +108,20 @@ export default function SettingsScreen() {
         >
           <Text
             style={{
-              fontSize: 30,
-              fontWeight: "800",
-              color: "#1c1c1e",
-              marginBottom: 8,
+              ...typography.displayMd,
+              color: colors.textPrimary,
+              marginBottom: spacing.sm,
               letterSpacing: -0.8,
             }}
           >
-            Edit profile
+            Edit Pet Profile
           </Text>
 
           <Text
             style={{
-              fontSize: 17,
-              color: "#6e6a67",
-              lineHeight: 25,
-              marginBottom: 20,
+              ...typography.body,
+              color: colors.textSecondary,
+              marginBottom: spacing.xl,
             }}
           >
             Keep your dog&apos;s details fresh and cozy.
@@ -116,10 +129,9 @@ export default function SettingsScreen() {
 
           <Text
             style={{
-              fontSize: 15,
-              fontWeight: "700",
-              color: "#1c1c1e",
-              marginBottom: 8,
+              ...typography.bodyStrong,
+              color: colors.textPrimary,
+              marginBottom: spacing.sm,
             }}
           >
             Dog name
@@ -129,26 +141,25 @@ export default function SettingsScreen() {
             value={name}
             onChangeText={setName}
             placeholder="Dog name"
-            placeholderTextColor="#9d9894"
+            placeholderTextColor={colors.textMuted}
             style={{
-              backgroundColor: "#f6f1ee",
+              backgroundColor: colors.surfaceMuted,
               borderWidth: 1,
-              borderColor: "#ebe4df",
-              borderRadius: 18,
-              paddingHorizontal: 16,
-              paddingVertical: 16,
-              fontSize: 17,
-              color: "#1c1c1e",
-              marginBottom: 16,
+              borderColor: colors.border,
+              borderRadius: radius.lg,
+              paddingHorizontal: spacing.lg,
+              paddingVertical: spacing.lg,
+              ...typography.body,
+              color: colors.textPrimary,
+              marginBottom: spacing.lg,
             }}
           />
 
           <Text
             style={{
-              fontSize: 15,
-              fontWeight: "700",
-              color: "#1c1c1e",
-              marginBottom: 8,
+              ...typography.bodyStrong,
+              color: colors.textPrimary,
+              marginBottom: spacing.sm,
             }}
           >
             Breed
@@ -158,26 +169,25 @@ export default function SettingsScreen() {
             value={breed}
             onChangeText={setBreed}
             placeholder="Breed"
-            placeholderTextColor="#9d9894"
+            placeholderTextColor={colors.textMuted}
             style={{
-              backgroundColor: "#f6f1ee",
+              backgroundColor: colors.surfaceMuted,
               borderWidth: 1,
-              borderColor: "#ebe4df",
-              borderRadius: 18,
-              paddingHorizontal: 16,
-              paddingVertical: 16,
-              fontSize: 17,
-              color: "#1c1c1e",
-              marginBottom: 16,
+              borderColor: colors.border,
+              borderRadius: radius.lg,
+              paddingHorizontal: spacing.lg,
+              paddingVertical: spacing.lg,
+              ...typography.body,
+              color: colors.textPrimary,
+              marginBottom: spacing.lg,
             }}
           />
 
           <Text
             style={{
-              fontSize: 15,
-              fontWeight: "700",
-              color: "#1c1c1e",
-              marginBottom: 8,
+              ...typography.bodyStrong,
+              color: colors.textPrimary,
+              marginBottom: spacing.sm,
             }}
           >
             Age band
@@ -187,17 +197,17 @@ export default function SettingsScreen() {
             value={ageBand}
             onChangeText={setAgeBand}
             placeholder="Puppy / Young / Adult / Senior"
-            placeholderTextColor="#9d9894"
+            placeholderTextColor={colors.textMuted}
             style={{
-              backgroundColor: "#f6f1ee",
+              backgroundColor: colors.surfaceMuted,
               borderWidth: 1,
-              borderColor: "#ebe4df",
-              borderRadius: 18,
-              paddingHorizontal: 16,
-              paddingVertical: 16,
-              fontSize: 17,
-              color: "#1c1c1e",
-              marginBottom: 20,
+              borderColor: colors.border,
+              borderRadius: radius.lg,
+              paddingHorizontal: spacing.lg,
+              paddingVertical: spacing.lg,
+              ...typography.body,
+              color: colors.textPrimary,
+              marginBottom: spacing.xl,
             }}
           />
 
@@ -206,10 +216,10 @@ export default function SettingsScreen() {
 
         <View
           style={{
-            backgroundColor: "#fffdfb",
-            borderRadius: 30,
-            padding: 22,
-            shadowColor: "#000000",
+            backgroundColor: colors.surface,
+            borderRadius: radius.round,
+            padding: spacing.xxl - spacing.xxs,
+            shadowColor: colors.shadow,
             shadowOpacity: 0.05,
             shadowRadius: 16,
             shadowOffset: { width: 0, height: 6 },
@@ -218,13 +228,12 @@ export default function SettingsScreen() {
         >
           <Text
             style={{
-              fontSize: 22,
-              fontWeight: "800",
-              color: "#1c1c1e",
-              marginBottom: 12,
+              ...typography.heading,
+              color: colors.textPrimary,
+              marginBottom: spacing.md,
             }}
           >
-            Your puppies
+            Your Pets
           </Text>
 
           {dogs.map((dog) => {
@@ -235,20 +244,19 @@ export default function SettingsScreen() {
                 key={dog.id}
                 onPress={() => setCurrentDog(dog.id)}
                 style={{
-                  backgroundColor: selected ? "#fff3f1" : "#f6f1ee",
+                  backgroundColor: selected ? colors.primarySoft : colors.surfaceMuted,
                   borderWidth: 1,
-                  borderColor: selected ? "#f56f6f" : "#ebe4df",
-                  borderRadius: 20,
-                  paddingHorizontal: 16,
-                  paddingVertical: 15,
-                  marginBottom: 10,
+                  borderColor: selected ? colors.primary : colors.border,
+                  borderRadius: radius.lg,
+                  paddingHorizontal: spacing.lg,
+                  paddingVertical: spacing.lg - spacing.xxs,
+                  marginBottom: spacing.sm + spacing.xxs,
                 }}
               >
                 <Text
                   style={{
-                    fontSize: 17,
-                    fontWeight: "700",
-                    color: "#1c1c1e",
+                    ...typography.bodyStrong,
+                    color: colors.textPrimary,
                   }}
                 >
                   {dog.name}
@@ -256,9 +264,9 @@ export default function SettingsScreen() {
 
                 <Text
                   style={{
-                    marginTop: 4,
-                    fontSize: 15,
-                    color: "#6e6a67",
+                    ...typography.bodySmall,
+                    marginTop: spacing.xs,
+                    color: colors.textSecondary,
                   }}
                 >
                   {dog.breed || "No breed"} • {dog.ageBand || "No age band"}
@@ -267,7 +275,7 @@ export default function SettingsScreen() {
             );
           })}
 
-          <View style={{ marginTop: 8 }}>
+          <View style={{ marginTop: spacing.sm }}>
             <PrimaryButton
               title={hasPremium ? "Add puppy" : "Add puppy (Premium)"}
               onPress={handleAddPuppy}
@@ -275,6 +283,7 @@ export default function SettingsScreen() {
           </View>
         </View>
       </ScrollView>
+      <BottomNav activeTab="pets" onFoodPress={handleFoodPress} onPoopPress={handlePoopPress} />
     </SafeAreaView>
   );
 }

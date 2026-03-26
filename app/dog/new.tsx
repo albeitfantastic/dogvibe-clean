@@ -5,6 +5,10 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import PrimaryButton from "../../src/components/PrimaryButton";
 import TopBar from "../../src/components/TopBar";
 import { useDogStore } from "../../src/store/useDogStore";
+import { colors } from "../../src/theme/colors";
+import { radius } from "../../src/theme/radius";
+import { spacing } from "../../src/theme/spacing";
+import { typography } from "../../src/theme/typography";
 
 const AGE_BANDS = ["Puppy", "Young", "Adult", "Senior"];
 
@@ -33,27 +37,29 @@ export default function NewDogScreen() {
   };
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: "#f6f2ee" }} edges={["top"]}>
-      <View style={{ flex: 1, paddingHorizontal: 20 }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: colors.background }} edges={["top"]}>
+      <View style={{ flex: 1, paddingHorizontal: spacing.xl }}>
         <TopBar title="New puppy" />
 
-        <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 32 }}>
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={{ paddingBottom: spacing.xxxl }}
+        >
           <View
             style={{
-              backgroundColor: "#fffaf7",
-              borderRadius: 28,
-              padding: 22,
+              backgroundColor: colors.surface,
+              borderRadius: radius.xxl,
+              padding: spacing.xxl - spacing.xxs,
               borderWidth: 1,
-              borderColor: "#efe6e0",
-              marginBottom: 18,
+              borderColor: colors.border,
+              marginBottom: spacing.lg + spacing.xxs,
             }}
           >
             <Text
               style={{
-                fontSize: 28,
-                fontWeight: "700",
-                color: "#1f1a17",
-                marginBottom: 8,
+                ...typography.title,
+                color: colors.textPrimary,
+                marginBottom: spacing.sm,
               }}
             >
               Create your dog
@@ -61,9 +67,8 @@ export default function NewDogScreen() {
 
             <Text
               style={{
-                fontSize: 16,
-                lineHeight: 23,
-                color: "#6f6258",
+                ...typography.body,
+                color: colors.textSecondary,
               }}
             >
               Add the basics so DogVibe feels sweet, personal, and ready for daily check-ins.
@@ -72,20 +77,19 @@ export default function NewDogScreen() {
 
           <View
             style={{
-              backgroundColor: "#fff",
-              borderRadius: 24,
-              padding: 18,
+              backgroundColor: colors.surface,
+              borderRadius: radius.xl,
+              padding: spacing.lg + spacing.xxs,
               borderWidth: 1,
-              borderColor: "#efe6e0",
-              marginBottom: 18,
+              borderColor: colors.border,
+              marginBottom: spacing.lg + spacing.xxs,
             }}
           >
             <Text
               style={{
-                fontSize: 14,
-                fontWeight: "600",
-                color: "#6f6258",
-                marginBottom: 8,
+                ...typography.caption,
+                color: colors.textSecondary,
+                marginBottom: spacing.sm,
               }}
             >
               Dog name
@@ -95,26 +99,25 @@ export default function NewDogScreen() {
               value={name}
               onChangeText={setName}
               placeholder="Mochi"
-              placeholderTextColor="#aa9d93"
+              placeholderTextColor={colors.textMuted}
               style={{
                 minHeight: 56,
-                borderRadius: 18,
-                backgroundColor: "#f8f3ef",
+                borderRadius: radius.lg,
+                backgroundColor: colors.surfaceMuted,
                 borderWidth: 1,
-                borderColor: "#ebe2dc",
-                paddingHorizontal: 16,
-                fontSize: 16,
-                color: "#1f1a17",
-                marginBottom: 16,
+                borderColor: colors.border,
+                paddingHorizontal: spacing.lg,
+                ...typography.body,
+                color: colors.textPrimary,
+                marginBottom: spacing.lg,
               }}
             />
 
             <Text
               style={{
-                fontSize: 14,
-                fontWeight: "600",
-                color: "#6f6258",
-                marginBottom: 8,
+                ...typography.caption,
+                color: colors.textSecondary,
+                marginBottom: spacing.sm,
               }}
             >
               Breed (optional)
@@ -124,32 +127,31 @@ export default function NewDogScreen() {
               value={breed}
               onChangeText={setBreed}
               placeholder="Corgi"
-              placeholderTextColor="#aa9d93"
+              placeholderTextColor={colors.textMuted}
               style={{
                 minHeight: 56,
-                borderRadius: 18,
-                backgroundColor: "#f8f3ef",
+                borderRadius: radius.lg,
+                backgroundColor: colors.surfaceMuted,
                 borderWidth: 1,
-                borderColor: "#ebe2dc",
-                paddingHorizontal: 16,
-                fontSize: 16,
-                color: "#1f1a17",
-                marginBottom: 16,
+                borderColor: colors.border,
+                paddingHorizontal: spacing.lg,
+                ...typography.body,
+                color: colors.textPrimary,
+                marginBottom: spacing.lg,
               }}
             />
 
             <Text
               style={{
-                fontSize: 14,
-                fontWeight: "600",
-                color: "#6f6258",
-                marginBottom: 10,
+                ...typography.caption,
+                color: colors.textSecondary,
+                marginBottom: spacing.sm + spacing.xxs,
               }}
             >
               Age band (optional)
             </Text>
 
-            <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 10 }}>
+            <View style={{ flexDirection: "row", flexWrap: "wrap", gap: spacing.sm + spacing.xxs }}>
               {AGE_BANDS.map((item) => {
                 const selected = ageBand === item;
 
@@ -158,19 +160,22 @@ export default function NewDogScreen() {
                     key={item}
                     onPress={() => setAgeBand(item)}
                     style={({ pressed }) => ({
-                      paddingHorizontal: 16,
-                      paddingVertical: 12,
-                      borderRadius: 999,
-                      backgroundColor: selected ? "#f56f6f" : pressed ? "#eee7e2" : "#f4efec",
+                      paddingHorizontal: spacing.lg,
+                      paddingVertical: spacing.md,
+                      borderRadius: radius.pill,
+                      backgroundColor: selected
+                        ? colors.primary
+                        : pressed
+                          ? colors.surfaceMuted
+                          : colors.surface,
                       borderWidth: 1,
-                      borderColor: selected ? "#f56f6f" : "#e8dfd9",
+                      borderColor: selected ? colors.primary : colors.border,
                     })}
                   >
                     <Text
                       style={{
-                        fontSize: 15,
-                        fontWeight: "600",
-                        color: selected ? "#fff" : "#3a312c",
+                        ...typography.bodySmall,
+                        color: selected ? colors.textInverse : colors.textPrimary,
                       }}
                     >
                       {item}
