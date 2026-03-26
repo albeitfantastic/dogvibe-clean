@@ -1,6 +1,8 @@
 import { useRouter } from "expo-router";
 import { Alert, FlatList, Image, Pressable, Share, Text, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import PrimaryButton from "../src/components/PrimaryButton";
+import TopBar from "../src/components/TopBar";
 import { useDogStore } from "../src/store/useDogStore";
 import { useEntryStore } from "../src/store/useEntryStore";
 import { formatEntryDate } from "../src/utils/date";
@@ -11,63 +13,63 @@ export default function HomeScreen() {
 
   const currentDog = useDogStore((s) => s.getCurrentDog());
   const entries = useEntryStore((s) => s.entries);
-  const streak = useEntryStore((s) =>
-    s.getCurrentStreak(currentDog?.id ?? null)
-  );
+  const streak = useEntryStore((s) => s.getCurrentStreak(currentDog?.id ?? null));
   const deleteEntry = useEntryStore((s) => s.deleteEntry);
 
   if (!currentDog) {
     return (
-      <View
-        style={{
-          flex: 1,
-          backgroundColor: "#f7f2f2",
-          paddingHorizontal: 24,
-          paddingTop: 48,
-          paddingBottom: 32,
-          justifyContent: "center",
-        }}
-      >
-        <View
-          style={{
-            backgroundColor: "#ffffff",
-            borderRadius: 28,
-            padding: 24,
-          }}
-        >
-          <Text
-            style={{
-              fontSize: 40,
-              fontWeight: "800",
-              color: "#1f1f1f",
-              marginBottom: 12,
-              letterSpacing: -1,
-            }}
-          >
-            DogVibe
-          </Text>
+      <SafeAreaView style={{ flex: 1, backgroundColor: "#f6f2ee" }} edges={["top"]}>
+        <View style={{ flex: 1, paddingHorizontal: 20, paddingBottom: 24 }}>
+          <TopBar title="DogVibe" showBack={false} />
 
-          <Text
-            style={{
-              fontSize: 18,
-              color: "#6b6b6b",
-              lineHeight: 27,
-              marginBottom: 28,
-            }}
-          >
-            Capture your dog&apos;s daily vibe in one photo.
-          </Text>
+          <View style={{ flex: 1, justifyContent: "center" }}>
+            <View
+              style={{
+                backgroundColor: "#fffaf7",
+                borderRadius: 28,
+                padding: 24,
+                borderWidth: 1,
+                borderColor: "#efe6e0",
+                shadowColor: "#000",
+                shadowOpacity: 0.04,
+                shadowRadius: 18,
+                shadowOffset: { width: 0, height: 8 },
+                elevation: 2,
+              }}
+            >
+              <Text
+                style={{
+                  fontSize: 30,
+                  fontWeight: "700",
+                  color: "#1f1a17",
+                  marginBottom: 10,
+                }}
+              >
+                Capture your dog&apos;s daily vibe
+              </Text>
 
-          <PrimaryButton
-            title="Set up your dog"
-            onPress={() => router.push("/dog/new")}
-          />
+              <Text
+                style={{
+                  fontSize: 16,
+                  lineHeight: 24,
+                  color: "#6f6258",
+                  marginBottom: 24,
+                }}
+              >
+                One photo in, one adorable mood card out.
+              </Text>
+
+              <PrimaryButton title="Set up your dog" onPress={() => router.push("/dog/new")} />
+            </View>
+          </View>
         </View>
-      </View>
+      </SafeAreaView>
     );
   }
 
-  const dogEntries = entries.filter((entry) => entry.dogId === currentDog.id);
+  const dogEntries = [...entries]
+    .filter((entry) => entry.dogId === currentDog.id)
+    .sort((a, b) => b.createdAt.localeCompare(a.createdAt));
 
   const handleShare = async (nickname: string, mood: string) => {
     await Share.share({
@@ -87,265 +89,234 @@ export default function HomeScreen() {
   };
 
   return (
-    <View
-      style={{
-        flex: 1,
-        backgroundColor: "#f7f2f2",
-        paddingHorizontal: 16,
-        paddingTop: 24,
-      }}
-    >
-      <View
-        style={{
-          backgroundColor: "#ffffff",
-          borderRadius: 28,
-          padding: 20,
-          marginBottom: 16,
-        }}
-      >
-        <View
-          style={{
-            flexDirection: "row",
-            justifyContent: "space-between",
-            alignItems: "flex-start",
-          }}
-        >
-          <View style={{ flex: 1, paddingRight: 12 }}>
-            <Text
-              style={{
-                fontSize: 14,
-                color: "#ff6b6b",
-                fontWeight: "700",
-                marginBottom: 8,
-                textTransform: "uppercase",
-                letterSpacing: 1,
-              }}
-            >
-              Daily vibe log
-            </Text>
-
-            <Text
-              style={{
-                fontSize: 30,
-                fontWeight: "800",
-                color: "#1f1f1f",
-                letterSpacing: -0.8,
-              }}
-            >
-              {currentDog.name}&apos;s vibe
-            </Text>
-
-            <Text
-              style={{
-                fontSize: 16,
-                color: "#6b6b6b",
-                marginTop: 8,
-                lineHeight: 24,
-              }}
-            >
-              Capture one photo per day to track your dog&apos;s vibe.
-            </Text>
-          </View>
-
-          <Pressable
-            onPress={() => router.push("/settings")}
-            style={{
-              backgroundColor: "#f7f2f2",
-              borderRadius: 999,
-              paddingHorizontal: 14,
-              paddingVertical: 10,
-            }}
-          >
-            <Text
-              style={{
-                color: "#1f1f1f",
-                fontWeight: "700",
-              }}
-            >
-              Settings
-            </Text>
-          </Pressable>
-        </View>
-
-        <View
-          style={{
-            marginTop: 16,
-            alignSelf: "flex-start",
-            backgroundColor: "#fff4e8",
-            paddingHorizontal: 14,
-            paddingVertical: 10,
-            borderRadius: 999,
-          }}
-        >
-          <Text
-            style={{
-              fontSize: 14,
-              fontWeight: "700",
-              color: "#d97706",
-            }}
-          >
-            🔥 {streak} day streak
-          </Text>
-        </View>
-      </View>
-
-      <View style={{ marginBottom: 16 }}>
-        <PrimaryButton
-          title="Add today&apos;s photo"
-          onPress={() => router.push("/capture")}
+    <SafeAreaView style={{ flex: 1, backgroundColor: "#f6f2ee" }} edges={["top"]}>
+      <View style={{ flex: 1, paddingHorizontal: 20 }}>
+        <TopBar
+          title="DogVibe"
+          showBack={false}
+          rightLabel="Settings"
+          onRightPress={() => router.push("/settings")}
         />
-      </View>
 
-      {dogEntries.length === 0 ? (
-        <View
-          style={{
-            flex: 1,
-            backgroundColor: "#ffffff",
-            borderRadius: 28,
-            justifyContent: "center",
-            alignItems: "center",
-            paddingHorizontal: 28,
-            paddingVertical: 32,
-          }}
-        >
-          <Text
-            style={{
-              fontSize: 22,
-              fontWeight: "800",
-              color: "#1f1f1f",
-              marginBottom: 10,
-            }}
-          >
-            No vibes yet 🐶
-          </Text>
-
-          <Text
-            style={{
-              fontSize: 15,
-              color: "#6b6b6b",
-              textAlign: "center",
-              lineHeight: 23,
-            }}
-          >
-            Capture your first photo to get a vibe reading.
-          </Text>
-        </View>
-      ) : (
         <FlatList
           data={dogEntries}
           keyExtractor={(item) => item.id}
           showsVerticalScrollIndicator={false}
-          contentContainerStyle={{ paddingBottom: 32 }}
+          contentContainerStyle={{ paddingBottom: 36 }}
+          ListHeaderComponent={
+            <View>
+              <View
+                style={{
+                  backgroundColor: "#fffaf7",
+                  borderRadius: 28,
+                  padding: 22,
+                  borderWidth: 1,
+                  borderColor: "#efe6e0",
+                  marginBottom: 18,
+                }}
+              >
+                <View
+                  style={{
+                    alignSelf: "flex-start",
+                    backgroundColor: "#fdf0eb",
+                    borderRadius: 999,
+                    paddingHorizontal: 12,
+                    paddingVertical: 7,
+                    marginBottom: 14,
+                  }}
+                >
+                  <Text style={{ fontSize: 13, fontWeight: "600", color: "#b95d52" }}>
+                    {streak} day streak
+                  </Text>
+                </View>
+
+                <Text
+                  style={{
+                    fontSize: 28,
+                    fontWeight: "700",
+                    color: "#1f1a17",
+                    marginBottom: 6,
+                  }}
+                >
+                  {currentDog.name}&apos;s vibe
+                </Text>
+
+                <Text
+                  style={{
+                    fontSize: 16,
+                    lineHeight: 23,
+                    color: "#6f6258",
+                    marginBottom: 18,
+                  }}
+                >
+                  Capture one cozy check-in and keep your dog&apos;s daily mood log beautifully
+                  together.
+                </Text>
+
+                <PrimaryButton title="Capture today’s vibe" onPress={() => router.push("/capture")} />
+              </View>
+
+              <View
+                style={{
+                  backgroundColor: "#fff",
+                  borderRadius: 24,
+                  padding: 18,
+                  borderWidth: 1,
+                  borderColor: "#efe6e0",
+                  marginBottom: 18,
+                }}
+              >
+                <Text
+                  style={{
+                    fontSize: 13,
+                    fontWeight: "600",
+                    color: "#9b8d82",
+                    textTransform: "uppercase",
+                    letterSpacing: 0.6,
+                    marginBottom: 8,
+                  }}
+                >
+                  Current pup
+                </Text>
+
+                <Text style={{ fontSize: 20, fontWeight: "700", color: "#1f1a17", marginBottom: 4 }}>
+                  {currentDog.name}
+                </Text>
+
+                <Text style={{ fontSize: 15, color: "#6f6258" }}>
+                  {[currentDog.breed || "No breed yet", currentDog.ageBand || "No age band yet"].join(
+                    " • ",
+                  )}
+                </Text>
+              </View>
+
+              <Text
+                style={{
+                  fontSize: 22,
+                  fontWeight: "700",
+                  color: "#1f1a17",
+                  marginBottom: 12,
+                }}
+              >
+                Mood cards
+              </Text>
+
+              {dogEntries.length === 0 ? (
+                <View
+                  style={{
+                    backgroundColor: "#fff",
+                    borderRadius: 24,
+                    padding: 22,
+                    borderWidth: 1,
+                    borderColor: "#efe6e0",
+                    marginBottom: 4,
+                  }}
+                >
+                  <Text
+                    style={{
+                      fontSize: 18,
+                      fontWeight: "700",
+                      color: "#1f1a17",
+                      marginBottom: 8,
+                    }}
+                  >
+                    No vibes yet
+                  </Text>
+
+                  <Text style={{ fontSize: 15, lineHeight: 22, color: "#6f6258" }}>
+                    Capture your first photo to start this dog&apos;s little mood diary.
+                  </Text>
+                </View>
+              ) : null}
+            </View>
+          }
           renderItem={({ item }) => (
             <View
               style={{
-                backgroundColor: "#ffffff",
-                borderRadius: 28,
-                padding: 12,
-                marginBottom: 16,
+                backgroundColor: "#fff",
+                borderRadius: 24,
+                padding: 14,
+                borderWidth: 1,
+                borderColor: "#efe6e0",
+                marginBottom: 14,
               }}
             >
               <Image
                 source={{ uri: item.imageUri }}
                 style={{
                   width: "100%",
-                  height: 260,
-                  borderRadius: 22,
+                  height: 220,
+                  borderRadius: 18,
+                  marginBottom: 14,
+                  backgroundColor: "#ede7e2",
                 }}
               />
 
-              <View
+              <Text
                 style={{
-                  paddingHorizontal: 6,
-                  paddingTop: 14,
-                  paddingBottom: 8,
+                  fontSize: 13,
+                  fontWeight: "600",
+                  color: "#9b8d82",
+                  marginBottom: 6,
                 }}
               >
-                <Text
-                  style={{
-                    fontSize: 13,
-                    fontWeight: "700",
-                    color: "#ff6b6b",
-                    textTransform: "uppercase",
-                    letterSpacing: 1,
-                    marginBottom: 8,
-                  }}
-                >
-                  {formatEntryDate(item.createdAt)}
-                </Text>
+                {formatEntryDate(item.createdAt)}
+              </Text>
 
-                <Text
-                  style={{
-                    fontSize: 24,
-                    fontWeight: "800",
-                    color: "#1f1f1f",
-                    letterSpacing: -0.5,
-                  }}
-                >
-                  {item.nickname}
-                </Text>
+              <Text
+                style={{
+                  fontSize: 22,
+                  fontWeight: "700",
+                  color: "#1f1a17",
+                  marginBottom: 4,
+                }}
+              >
+                {item.nickname}
+              </Text>
 
-                <Text
-                  style={{
-                    fontSize: 16,
-                    color: "#6b6b6b",
-                    marginTop: 6,
-                    lineHeight: 22,
-                  }}
-                >
-                  Mood: {item.mood} {getMoodEmoji(item.mood)}
-                </Text>
+              <Text
+                style={{
+                  fontSize: 16,
+                  color: "#6f6258",
+                  marginBottom: 14,
+                }}
+              >
+                Mood: {item.mood} {getMoodEmoji(item.mood)}
+              </Text>
 
-                <View
-                  style={{
-                    flexDirection: "row",
-                    gap: 10,
-                    marginTop: 14,
-                  }}
+              <View style={{ flexDirection: "row", gap: 10 }}>
+                <Pressable
+                  onPress={() => handleShare(item.nickname, item.mood)}
+                  style={({ pressed }) => ({
+                    flex: 1,
+                    minHeight: 46,
+                    borderRadius: 16,
+                    alignItems: "center",
+                    justifyContent: "center",
+                    backgroundColor: pressed ? "#eee7e2" : "#f4efec",
+                  })}
                 >
-                  <Pressable
-                    onPress={() => handleShare(item.nickname, item.mood)}
-                    style={{
-                      backgroundColor: "#f7f2f2",
-                      borderRadius: 999,
-                      paddingHorizontal: 14,
-                      paddingVertical: 10,
-                    }}
-                  >
-                    <Text
-                      style={{
-                        color: "#1f1f1f",
-                        fontWeight: "700",
-                      }}
-                    >
-                      Share
-                    </Text>
-                  </Pressable>
+                  <Text style={{ fontSize: 15, fontWeight: "600", color: "#3a312c" }}>Share</Text>
+                </Pressable>
 
-                  <Pressable
-                    onPress={() => handleDelete(item.id)}
-                    style={{
-                      backgroundColor: "#fff1f1",
-                      borderRadius: 999,
-                      paddingHorizontal: 14,
-                      paddingVertical: 10,
-                    }}
-                  >
-                    <Text
-                      style={{
-                        color: "#d11a2a",
-                        fontWeight: "700",
-                      }}
-                    >
-                      Delete
-                    </Text>
-                  </Pressable>
-                </View>
+                <Pressable
+                  onPress={() => handleDelete(item.id)}
+                  style={({ pressed }) => ({
+                    flex: 1,
+                    minHeight: 46,
+                    borderRadius: 16,
+                    alignItems: "center",
+                    justifyContent: "center",
+                    backgroundColor: pressed ? "#fde7e5" : "#fff1ef",
+                  })}
+                >
+                  <Text style={{ fontSize: 15, fontWeight: "600", color: "#c45b53" }}>Delete</Text>
+                </Pressable>
               </View>
             </View>
           )}
         />
-      )}
-    </View>
+      </View>
+    </SafeAreaView>
   );
 }
