@@ -1,140 +1,190 @@
-import { useRouter } from 'expo-router';
-import { useState } from 'react';
-import { Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
+import { useRouter } from "expo-router";
+import { useState } from "react";
+import { Pressable, Text, TextInput, View } from "react-native";
+import PrimaryButton from "../../src/components/PrimaryButton";
+import TopBar from "../../src/components/TopBar";
+import { useDogStore } from "../../src/store/useDogStore";
 
-import PrimaryButton from '../../src/components/PrimaryButton';
-import { useDogStore } from '../../src/store/useDogStore';
-import { colors } from '../../src/theme/colors';
-import { radius } from '../../src/theme/radius';
-import { spacing } from '../../src/theme/spacing';
-import { typography } from '../../src/theme/typography';
-import type { AgeBand } from '../../src/types/domain';
-
-const AGE_BANDS: AgeBand[] = ['puppy', 'young', 'adult', 'senior'];
+const AGE_BANDS = ["Puppy", "Young", "Adult", "Senior"];
 
 export default function NewDogScreen() {
   const router = useRouter();
-  const createDog = useDogStore((state) => state.createDog);
+  const addDog = useDogStore((s) => s.addDog);
 
-  const [name, setName] = useState('');
-  const [breed, setBreed] = useState('');
-  const [ageBand, setAgeBand] = useState<AgeBand | undefined>(undefined);
+  const [name, setName] = useState("");
+  const [breed, setBreed] = useState("");
+  const [ageBand, setAgeBand] = useState("");
 
-  const isValid = name.trim().length > 0;
+  const handleCreateDog = () => {
+    const trimmedName = name.trim();
+
+    if (!trimmedName) {
+      return;
+    }
+
+    addDog({
+      name: trimmedName,
+      breed: breed.trim(),
+      ageBand,
+    });
+
+    router.replace("/");
+  };
 
   return (
-    <View style={styles.container}>
-      <View style={styles.form}>
-        <View style={styles.field}>
-          <Text style={styles.label}>Dog name</Text>
-          <TextInput
-            value={name}
-            onChangeText={setName}
-            placeholder="Bella"
-            placeholderTextColor={colors.textSecondary}
-            style={styles.input}
-          />
-        </View>
+    <View
+      style={{
+        flex: 1,
+        backgroundColor: "#f7f2f2",
+        paddingHorizontal: 16,
+        paddingTop: 22,
+        paddingBottom: 20,
+      }}
+    >
+      <TopBar title="New Dog" />
 
-        <View style={styles.field}>
-          <Text style={styles.label}>Breed (optional)</Text>
-          <TextInput
-            value={breed}
-            onChangeText={setBreed}
-            placeholder="Golden Retriever"
-            placeholderTextColor={colors.textSecondary}
-            style={styles.input}
-          />
-        </View>
-
-        <View style={styles.field}>
-          <Text style={styles.label}>Age band (optional)</Text>
-          <View style={styles.ageRow}>
-            {AGE_BANDS.map((item) => {
-              const selected = ageBand === item;
-              return (
-                <Pressable
-                  key={item}
-                  onPress={() => setAgeBand(item)}
-                  style={[styles.ageChip, selected && styles.ageChipSelected]}
-                >
-                  <Text style={[styles.ageChipText, selected && styles.ageChipTextSelected]}>
-                    {item}
-                  </Text>
-                </Pressable>
-              );
-            })}
-          </View>
-        </View>
-      </View>
-
-      <PrimaryButton
-        label="Create dog"
-        disabled={!isValid}
-        onPress={() => {
-          createDog({
-            name: name.trim(),
-            breed: breed.trim() || undefined,
-            ageBand,
-          });
-          router.replace({ pathname: '/' });
+      <View
+        style={{
+          backgroundColor: "#ffffff",
+          borderRadius: 28,
+          padding: 18,
+          flex: 1,
         }}
-      />
+      >
+        <Text
+          style={{
+            fontSize: 30,
+            fontWeight: "800",
+            color: "#1f1f1f",
+            marginBottom: 8,
+            letterSpacing: -0.8,
+          }}
+        >
+          Create your dog
+        </Text>
+
+        <Text
+          style={{
+            fontSize: 16,
+            color: "#6b6b6b",
+            lineHeight: 24,
+            marginBottom: 22,
+          }}
+        >
+          Add the basics so DogVibe feels personal.
+        </Text>
+
+        <Text
+          style={{
+            fontSize: 15,
+            fontWeight: "700",
+            color: "#1f1f1f",
+            marginBottom: 8,
+          }}
+        >
+          Dog name
+        </Text>
+
+        <TextInput
+          value={name}
+          onChangeText={setName}
+          placeholder="Enter dog name"
+          placeholderTextColor="#9a9a9a"
+          style={{
+            backgroundColor: "#f7f2f2",
+            borderWidth: 1,
+            borderColor: "#e9dede",
+            borderRadius: 18,
+            paddingHorizontal: 16,
+            paddingVertical: 16,
+            fontSize: 16,
+            marginBottom: 16,
+          }}
+        />
+
+        <Text
+          style={{
+            fontSize: 15,
+            fontWeight: "700",
+            color: "#1f1f1f",
+            marginBottom: 8,
+          }}
+        >
+          Breed (optional)
+        </Text>
+
+        <TextInput
+          value={breed}
+          onChangeText={setBreed}
+          placeholder="Enter breed"
+          placeholderTextColor="#9a9a9a"
+          style={{
+            backgroundColor: "#f7f2f2",
+            borderWidth: 1,
+            borderColor: "#e9dede",
+            borderRadius: 18,
+            paddingHorizontal: 16,
+            paddingVertical: 16,
+            fontSize: 16,
+            marginBottom: 18,
+          }}
+        />
+
+        <Text
+          style={{
+            fontSize: 15,
+            fontWeight: "700",
+            color: "#1f1f1f",
+            marginBottom: 10,
+          }}
+        >
+          Age band (optional)
+        </Text>
+
+        <View
+          style={{
+            flexDirection: "row",
+            flexWrap: "wrap",
+            gap: 10,
+          }}
+        >
+          {AGE_BANDS.map((item) => {
+            const selected = ageBand === item;
+
+            return (
+              <Pressable
+                key={item}
+                onPress={() => setAgeBand(item)}
+                style={{
+                  paddingHorizontal: 16,
+                  paddingVertical: 11,
+                  borderRadius: 999,
+                  backgroundColor: selected ? "#ff6b6b" : "#f7f2f2",
+                  borderWidth: 1,
+                  borderColor: selected ? "#ff6b6b" : "#e9dede",
+                }}
+              >
+                <Text
+                  style={{
+                    color: selected ? "#ffffff" : "#1f1f1f",
+                    fontWeight: selected ? "700" : "500",
+                  }}
+                >
+                  {item}
+                </Text>
+              </Pressable>
+            );
+          })}
+        </View>
+
+        <View style={{ flex: 1 }} />
+
+        <PrimaryButton
+          title="Create dog"
+          onPress={handleCreateDog}
+          disabled={!name.trim()}
+        />
+      </View>
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: colors.background,
-    padding: spacing.xl,
-    justifyContent: 'space-between',
-  },
-  form: {
-    gap: spacing.lg,
-    marginTop: spacing.md,
-  },
-  field: {
-    gap: spacing.sm,
-  },
-  label: {
-    ...typography.bodyStrong,
-    color: colors.textPrimary,
-  },
-  input: {
-    minHeight: 52,
-    borderRadius: radius.md,
-    borderWidth: 1,
-    borderColor: colors.border,
-    backgroundColor: colors.card,
-    paddingHorizontal: spacing.md,
-    color: colors.textPrimary,
-    ...typography.body,
-  },
-  ageRow: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: spacing.sm,
-  },
-  ageChip: {
-    paddingHorizontal: spacing.md,
-    paddingVertical: spacing.sm,
-    borderRadius: radius.pill,
-    borderWidth: 1,
-    borderColor: colors.border,
-    backgroundColor: colors.card,
-  },
-  ageChipSelected: {
-    backgroundColor: colors.primary,
-    borderColor: colors.primary,
-  },
-  ageChipText: {
-    ...typography.caption,
-    color: colors.textPrimary,
-    textTransform: 'capitalize',
-  },
-  ageChipTextSelected: {
-    color: colors.textInverse,
-  },
-});

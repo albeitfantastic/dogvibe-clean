@@ -1,13 +1,19 @@
-import { create } from 'zustand';
+import { create } from "zustand";
 
-type EntryDraftState = {
-  draftImageUri: string | null;
-  setDraftImageUri: (uri: string | null) => void;
-  resetDraft: () => void;
+type Draft = {
+  imageUri?: string;
+  nickname?: string;
+  mood?: string;
 };
 
-export const useEntryDraftStore = create<EntryDraftState>((set) => ({
-  draftImageUri: null,
-  setDraftImageUri: (uri) => set({ draftImageUri: uri }),
-  resetDraft: () => set({ draftImageUri: null }),
+type State = {
+  draft: Draft | null;
+  setDraft: (draft: Draft) => void;
+  clearDraft: () => void;
+};
+
+export const useEntryDraftStore = create<State>((set) => ({
+  draft: null,
+  setDraft: (draft) => set({ draft }),
+  clearDraft: () => set({ draft: null }),
 }));

@@ -1,51 +1,19 @@
-import { Stack } from 'expo-router';
-import 'react-native-get-random-values';
-import { colors } from '../src/theme/colors';
+import "react-native-get-random-values";
+
+import { Stack } from "expo-router";
 
 export default function RootLayout() {
   return (
-    <Stack
-      screenOptions={{
-        headerBackButtonDisplayMode: 'minimal',
-        headerStyle: {
-          backgroundColor: '#FFFFFF',
-        },
-        contentStyle: {
-          backgroundColor: colors.background,
-        },
-      }}
-    >
-      <Stack.Screen
-        name="index"
-        options={{
-          title: 'Home',
-          headerShown: false,
-        }}
-      />
-      <Stack.Screen
-        name="onboarding"
-        options={{
-          title: 'Welcome',
-        }}
-      />
-      <Stack.Screen
-        name="dog/new"
-        options={{
-          title: 'New Dog',
-        }}
-      />
-      <Stack.Screen
-        name="capture"
-        options={{
-          title: 'Capture',
-        }}
-      />
-      <Stack.Screen
-        name="reveal"
-        options={{
-          title: 'Reveal',
-        }}
-      />
+    <Stack screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="index" />
+      <Stack.Screen name="onboarding" />
+      <Stack.Screen name="capture" />
+      <Stack.Screen name="reveal" />
+      <Stack.Screen name="analyze" />
+      <Stack.Screen name="result" />
+      <Stack.Screen name="settings" />
+      <Stack.Screen name="paywall" />
+      <Stack.Screen name="dog/new" />
     </Stack>
   );
 }

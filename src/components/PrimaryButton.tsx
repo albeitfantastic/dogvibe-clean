@@ -1,73 +1,39 @@
-import { ActivityIndicator, Pressable, StyleSheet, Text, type TextStyle, type ViewStyle } from 'react-native';
+import { Pressable, Text } from "react-native";
 
-import { colors } from '../theme/colors';
-import { radius } from '../theme/radius';
-import { spacing } from '../theme/spacing';
-import { typography } from '../theme/typography';
-
-type PrimaryButtonProps = {
-  label: string;
-  onPress?: () => void;
+type Props = {
+  title: string;
+  onPress: () => void;
   disabled?: boolean;
-  loading?: boolean;
-  fullWidth?: boolean;
-  style?: ViewStyle;
-  textStyle?: TextStyle;
 };
 
 export default function PrimaryButton({
-  label,
+  title,
   onPress,
   disabled = false,
-  loading = false,
-  fullWidth = true,
-  style,
-  textStyle,
-}: PrimaryButtonProps) {
-  const isDisabled = disabled || loading;
-
+}: Props) {
   return (
     <Pressable
-      accessibilityRole="button"
-      disabled={isDisabled}
       onPress={onPress}
-      style={({ pressed }) => [
-        styles.base,
-        fullWidth && styles.fullWidth,
-        isDisabled && styles.disabled,
-        pressed && !isDisabled && styles.pressed,
-        style,
-      ]}
+      disabled={disabled}
+      hitSlop={6}
+      style={({ pressed }) => ({
+        minHeight: 54,
+        borderRadius: 18,
+        alignItems: "center",
+        justifyContent: "center",
+        backgroundColor: disabled ? "#f0b8b8" : pressed ? "#f16969" : "#f56f6f",
+      })}
     >
-      {loading ? (
-        <ActivityIndicator color={colors.textInverse} />
-      ) : (
-        <Text style={[styles.label, textStyle]}>{label}</Text>
-      )}
+      <Text
+        style={{
+          fontSize: 17,
+          fontWeight: "700",
+          color: "#ffffff",
+          letterSpacing: -0.2,
+        }}
+      >
+        {title}
+      </Text>
     </Pressable>
   );
 }
-
-const styles = StyleSheet.create({
-  base: {
-    minHeight: 52,
-    borderRadius: radius.pill,
-    backgroundColor: colors.primary,
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingHorizontal: spacing.lg,
-  },
-  fullWidth: {
-    width: '100%',
-  },
-  pressed: {
-    backgroundColor: colors.primaryPressed,
-  },
-  disabled: {
-    backgroundColor: colors.primaryDisabled,
-  },
-  label: {
-    ...typography.button,
-    color: colors.textInverse,
-  },
-});
