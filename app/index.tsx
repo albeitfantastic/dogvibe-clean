@@ -8,6 +8,24 @@ import { useEntryStore } from "../src/store/useEntryStore";
 import { formatEntryDate } from "../src/utils/date";
 import { getMoodEmoji } from "../src/utils/mood";
 
+function toTimestamp(value: unknown) {
+  if (typeof value === "number") {
+    return value;
+  }
+
+  if (typeof value === "string") {
+    const parsed = new Date(value).getTime();
+    return Number.isNaN(parsed) ? 0 : parsed;
+  }
+
+  if (value instanceof Date) {
+    const parsed = value.getTime();
+    return Number.isNaN(parsed) ? 0 : parsed;
+  }
+
+  return 0;
+}
+
 export default function HomeScreen() {
   const router = useRouter();
 
@@ -69,7 +87,7 @@ export default function HomeScreen() {
 
   const dogEntries = [...entries]
     .filter((entry) => entry.dogId === currentDog.id)
-    .sort((a, b) => b.createdAt.localeCompare(a.createdAt));
+    .sort((a, b) => toTimestamp(b.createdAt) - toTimestamp(a.createdAt));
 
   const handleShare = async (nickname: string, mood: string) => {
     await Share.share({
